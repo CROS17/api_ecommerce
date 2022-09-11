@@ -1,71 +1,100 @@
-import boom from '@hapi/boom';
-import dotenv from 'dotenv';
-dotenv.config();
+const db = require('../models');
+const Category = db.categories;
 
-import connection  from "../config/Database.db.js";
+// const Op = db.Sequelize.Op;
 
+	exports.create = (req,res) =>{
+		//creamos la categoria
+		const categoria = {
+			name: req.body.name,
+			description: req.body.description
+		}
+		//guardamos datos
+		Category.create(categoria)
+			.then(data => {
+				res.send(data);
+			})
+			.catch(err =>{
+				res.status(500).send({
+					message: err.message ||"no se pudo crear"
+				})
+			});
+	};
 
-class CategoryService {
+	exports.findAll = (req, res) => {	
+		Category.findAll()
+			.then(data => {
+				// console.log(data);
+				res.send(data);
+			})
+			.catch(err => {
+				res.status(500).send({
+					message:
+					err.message || "No se encontro la Categoria."
+				});
+			});
+	};
+	exports.findOne = (req, res) =>{
+		const id = req.params.id;
+		Category.findByPk(id)
+			.then(data =>{
+				if (data) {
+					res.send(data);
+				} else {
+					res.status(404).send({
+					  message: `no se encontro el id=${id}.`
+					});
+				}
+			})
+			.catch(err => {
+				res.status(500).send({
+					message: "error al buscar la categoria id="+id
+				})
+			});
+	};
 
+	exports.update = (req, res) =>{
+		const id = req.params.id;
+		Category.update(req.body,{
+			where: {id:id}
+		})
+		.then(num =>{
+			if (num == 1) {
+				res.send({
+					message: "categoria actualizada"
+				});
+			} else {
+				res.send({
+				message: `Cannot update categoria with id=${id}.`
+				});
+			}			
+		})
+		.catch(err => {
+			res.status(500).send({
+				message: "error al actualizar la categoria id="+ id
+			});
+		});
+	};
 
-  async find() {
-    return new Promise((resolve,reject) => {
-		  connection.query("SELECT * FROM categories",
-              (err, res)=>{
-                if (err) reject(err);
-                else resolve(res);
-    	  });
-    });
-  }
-
-  async create(body) {
-    // console.log("hola "+body);
-    // const { name,description } = data;
-    // return new Promise((resolve, reject)=>{
-    //   connection.query("INSERT INTO categories(name,description) VALUES (?,?)",
-    //     [ name,description ],
-    //     (err, res) => {
-    //       if (err) reject(err);
-    //       else resolve(res.insertId);
-    //     });
-    // });
-
-  }
-
-
-  async findOne(id) {
-    return new Promise((resolve,reject)=>{
-      connection.query("SELECT id,name,description FROM categories WHERE id = (?)",
-        [id],(err,res)=>{
-          if(err)reject(err);
-          else resolve(res[0]);
-        });
-    });
-
-  }
-
-  async update(id, description) {
-    return new Promise((resolve, reject) =>{
-      connection.query("UPDATE categories SET description=(?) WHERE id=(?)",
-        [descripcion,id],(err)=>{
-          if(err)reject(err);
-          else resolve();
-        });
-    });
-  }
-
-  async delete(id) {
-    return new Promise((resolve, reject) => {
-      connection.query("DELETE FROM categories WHERE id = (?)",
-        [id],
-        (err) => {
-          if (err) reject(err);
-          else resolve();
-        });
-    });
-  }
-}
-
-
-export default CategoryService;
-
+	exports.delete = (req, res) =>{
+		const id = req.params.id;
+		Category.destroy({
+			where: {id:id}
+		})
+		.then(num =>{
+			if (num == 1) {
+				res.send({
+					message: "categoria eliminada"
+				});
+			} else {
+				res.send({
+				message: `Cannot eliminar categoria with id=${id}.`
+				});
+			}			
+		})
+		.catch(err => {
+			res.status(500).send({
+				message: "error al eliminar la categoria id="+ id
+			});
+		});
+	};

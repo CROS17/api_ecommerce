@@ -1,39 +1,32 @@
 {
   "name": "api_ecommerce",
   "version": "1.0.0",
-  "description": "Rest-Api Express,mysql",
+  "description": "ApiRest,express,sequelize,mysql",
   "main": "index.js",
-  "type": "module",
   "scripts": {
-    "test": "jest",
-    "dev": "nodemon index.js",
-    "start": "nodemon index.js",
-	"lint": "eslint"
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CROS17/api_ecommerce.git"
   },
   "keywords": [
-    "nodejs",
     "express",
+    "express",
+    "sequelize",
     "mysql",
-    "api"
+    "restapi"
   ],
-  "author": "ChristianOS",
+  "author": "Christian OS",
   "license": "ISC",
-  "devDependencies": {
-    "dotenv": "^16.0.1",
-    "eslint": "^8.22.0",
-    "eslint-config-prettier": "^8.5.0",
-    "eslint-plugin-prettier": "^4.2.1",
-    "nodemon": "^2.0.19",
-    "prettier": "^2.7.1"
+  "bugs": {
+    "url": "https://github.com/CROS17/api_ecommerce/issues"
   },
+  "homepage": "https://github.com/CROS17/api_ecommerce#readme",
   "dependencies": {
-    "@hapi/boom": "^10.0.0",
     "cors": "^2.8.5",
     "express": "^4.18.1",
-    "jest": "^29.0.1",
-    "joi": "^17.6.0",
-    "mysql": "^2.18.1",
-    "save-dev": "0.0.1-security"
+    "mysql2": "^2.3.3",
+    "sequelize": "^6.21.6"
   }
-
 }
