@@ -1,20 +1,89 @@
 const express = require('express');
-const CategoryService = require('../services/category.service');
+// const CategoryService = require('../services/category.service');
+const { 
+	createCategory,	
+	allCategory,
+	oneCategory,
+	updateCategory,
+	deletCategory
+} = require('../services/category.service');
 
 const router = express.Router();
-// const service = new CategoryService();
 
-module.exports = app => {
-	// Create a new Tutorial
-	router.post("/", CategoryService.create);
-	// Retrieve all Tutorials
-	router.get("/", CategoryService.findAll);
-	// Retrieve a single Tutorial with id
-	router.get("/:id", CategoryService.findOne);
-	// Update a Tutorial with id
-	router.put("/:id", CategoryService.update);
-	// Delete a Tutorial with id
-	router.delete("/:id", CategoryService.delete);
+	// Retrieve all Categories
+	router.get('/',	async (req, res,next) => {
+			try {
+				const categories = await allCategory();
+				res.json(categories);
+			} catch (error) {
+				next(error);
+			}	
+		}
+	);
+	// Create a new Categories
+	router.post('/', async(req, res, next) => {
+			try {
+				const data = {
+					name: req.body.categories.name,
+					description: req.body.categories.description,
+				}			
+				const newCategoria = await createCategory(data);			
+				res.json(newCategoria);
+			} catch (error) {
+				next(error);
+			}
+		}
+	);
 
-	app.use('/api/categorias', router);
-  };
+	// Retrieve a single Categoria with id
+	router.param('categoryId', async (req, res, next, categoryId)=> {
+		try{
+			// console.log(categoryId);
+			const category = await oneCategory(categoryId);
+			req.category = category;
+			next(); // go to router.get('/:categoryId')
+		} catch(e) {
+			console.log(e);
+			res.sendStatus(404);
+		}
+	 });
+	router.get('/:categoryId',  (req, res, next)=>{
+		res.status(200).json({category: req.category});
+	 });
+	  
+	// // Update a Categoria with id
+	router.put('/:categoryId', async(req, res, next)=>{
+			try {				
+				const data = {
+					categoryId: req.params.categoryId,
+					name: req.body.categories.name,
+					description: req.body.categories.description,
+				}		
+				// const editCategoria = await updateCategory(data)
+				// res.json(editCategoria);
+				const editCategoria = await updateCategory(data)
+				.then(()=>{
+					return oneCategory(data.categoryId);
+				});			
+				res.json({editCategoria: editCategoria});
+			} catch (error) {
+				next(error);
+			}
+		}
+	);
+	// // Delete a Categoria with id
+	// router.delete("/:id", CategoryService.delete);
+		router.delete('/:categoryId', async(req, res, next) => {
+				try {
+					const categoryId = req.params.categoryId;
+					console.log(categoryId);
+					const response = await deletCategory(categoryId);
+					return res.sendStatus(204);
+					
+				} catch (error) {
+					next(error);
+				}
+			}
+		);
+
+  module.exports = router;
