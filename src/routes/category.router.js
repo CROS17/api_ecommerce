@@ -38,7 +38,6 @@ const router = express.Router();
 	// Retrieve a single Categoria with id
 	router.param('categoryId', async (req, res, next, categoryId)=> {
 		try{
-			// console.log(categoryId);
 			const category = await oneCategory(categoryId);
 			req.category = category;
 			next(); // go to router.get('/:categoryId')
@@ -58,9 +57,7 @@ const router = express.Router();
 					categoryId: req.params.categoryId,
 					name: req.body.categories.name,
 					description: req.body.categories.description,
-				}		
-				// const editCategoria = await updateCategory(data)
-				// res.json(editCategoria);
+				}
 				const editCategoria = await updateCategory(data)
 				.then(()=>{
 					return oneCategory(data.categoryId);

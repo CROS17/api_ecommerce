@@ -35,19 +35,7 @@ const {
         }
     });
 
-    // Retrieve one trademark
-    router.get('/:id', async(req, res, next) => {
-        try
-        {
-            const id = req.params.id;
-            const trademark = await oneTrademark(id);
-            res.json(trademark);
-        }catch (error) {
-            next(error);
-        }
-    });
-
-    //Update trademark where id
+    // Retrieve a single trademark with id
     router.param('trademarkId', async(req, res, next, trademarkId) => {
         try
         {
@@ -61,11 +49,30 @@ const {
     router.get('/:trademarkId', async(req,res,next) =>{
         try
         {
-            res.status(200).json({category: req.category});
+            res.status(200).json({trademark: req.trademark});
         }catch(error) {
             next(error);
         }
     })
+
+    //Update trademark where id
+    router.put('/:trademarkId', async(req, res, next)=>{
+            try {
+                const data = {
+                    trademarkId: req.params.trademarkId,
+                    name: req.body.trademarks.name,
+                    description: req.body.trademarks.description,
+                }
+                const editTrademark = await updateTrademark(data)
+                    .then(()=>{
+                        return oneTrademark(data.trademarkId);
+                    });
+                res.json({editTrademark: editTrademark});
+            } catch (error) {
+                next(error);
+            }
+        }
+    );
 
     //delete a trademark
     router.delete('/:trademarkId',async(req,res,next)=>{
