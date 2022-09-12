@@ -25,8 +25,9 @@ const router = express.Router();
         try
         {
             const data ={
-                name: req.body.users.name,
-                description: req.body.users.description
+                username: req.body.users.username,
+                email: req.body.users.email,
+                password: req.body.users.password
             }
             const newUser = await createUser(data);
             res.json(newUser);
@@ -60,8 +61,9 @@ const router = express.Router();
             try {
                 const data = {
                     userId: req.params.userId,
-                    name: req.body.users.name,
-                    description: req.body.users.description,
+                    username: req.body.users.username,
+                    email: req.body.users.email,
+                    password: req.body.users.password
                 }
                 const editUser = await updateUser(data)
                     .then(()=>{

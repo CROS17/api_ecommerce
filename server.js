@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 const routerApi = require('./src/routes');
-const db = require("./src/models");
+// const db = require("./src/models");
 
 	app.use(cors());
     app.use(express.json());
@@ -12,13 +12,13 @@ const db = require("./src/models");
         res.send('ApiRest Music Ecommerce');
     });
 
-	db.sequelize.sync()
-	.then(() => {
-		console.log("Synced db.");
-	})
-	.catch((err) => {
-		console.log("Failed to sync db: " + err.message);
-	});
+	// db.sequelize.sync()
+	// .then(() => {
+	// 	console.log("Synced db.");
+	// })
+	// .catch((err) => {
+	// 	console.log("Failed to sync db: " + err.message);
+	// });
 
 	routerApi(app);
 
