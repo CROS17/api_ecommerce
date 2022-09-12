@@ -5,11 +5,7 @@ module.exports = (sequelize,Sequelize) => {
 		},
 		description:{
 			type: Sequelize.STRING,
-		},
-		// createdAt : {
-		// 	field : 'created_at',
-		// 	type : Sequelize.DATETIME
-		// }
+		}
 	},{
 		timestamps : true
 	});

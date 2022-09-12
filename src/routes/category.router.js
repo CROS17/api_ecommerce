@@ -5,7 +5,7 @@ const {
 	allCategory,
 	oneCategory,
 	updateCategory,
-	deletCategory
+	deleteCategory
 } = require('../services/category.service');
 
 const router = express.Router();
@@ -71,15 +71,13 @@ const router = express.Router();
 			}
 		}
 	);
+	
 	// // Delete a Categoria with id
-	// router.delete("/:id", CategoryService.delete);
 		router.delete('/:categoryId', async(req, res, next) => {
 				try {
 					const categoryId = req.params.categoryId;
-					console.log(categoryId);
-					const response = await deletCategory(categoryId);
-					return res.sendStatus(204);
-					
+					const response = await deleteCategory(categoryId);
+					return res.sendStatus(204);					
 				} catch (error) {
 					next(error);
 				}

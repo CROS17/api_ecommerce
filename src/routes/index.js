@@ -1,5 +1,7 @@
 const express = require('express');
 const categoryRouter = require('./category.router');
+const trademarkRouter = require('./trademark.router');
+const productRouter = require('./product.router');
 
 function routerApi(app) {
 
@@ -7,6 +9,8 @@ function routerApi(app) {
 
   app.use('/api', router);
   router.use('/categorias', categoryRouter);
+  router.use('/marcas', trademarkRouter);
+  router.use('/productos', productRouter);
 
 }
 
